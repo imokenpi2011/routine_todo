@@ -7,12 +7,13 @@ import 'package:sqflite/sqflite.dart';
 const String latestTodosTableStructure = '''
   CREATE TABLE todos(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    repeat_todo_preset_id INTEGER NOT NULL,
     name TEXT NOT NULL,
-    startedTime TEXT NULL DEFAULT NULL,
-    endedTime TEXT NULL DEFAULT NULL,
+    started_time TEXT NULL DEFAULT NULL,
+    ended_time TEXT NULL DEFAULT NULL,
     completed INTEGER NOT NULL DEFAULT 0,
-    createdAt TEXT NOT NULL,
-    updatedAt TEXT NOT NULL
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
   );
 ''';
 
@@ -20,7 +21,9 @@ const String latestTodosTableStructure = '''
 // TODO: 定義する
 const String latestRepeatTodoPresetsTableStructure = '''
   CREATE TABLE repeat_todo_presets(
-    id INTEGER PRIMARY KEY AUTOINCREMENT
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
   );
 ''';
 
@@ -29,9 +32,11 @@ const String latestRepeatTodoPresetsTableStructure = '''
 const String latestRepeatTodosTableStructure = '''
   CREATE TABLE repeat_todos(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    repeatTodoPresetId INTEGER NOT NULL,
+    repeat_todo_preset_id INTEGER NOT NULL,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
   )
-  FOREIGN KEY (repeatTodoPresetId) REFERENCES repeat_todo_presets(id);
+  FOREIGN KEY (repeat_todo_preset_id) REFERENCES repeat_todo_presets(id);
 ''';
 
 /// DBの接続情報を管理するクラス
