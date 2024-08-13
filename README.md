@@ -1,16 +1,26 @@
 # routine_todo
 
-A new Flutter project.
+ルーティンTODOアプリ
 
-## Getting Started
+## ディレクトリ構成
+参考：https://blog.kinto-technologies.com/posts/2023-12-10-flutter-architecture/
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+lib/
+├── presentations
+│   ├── pages
+│   │   └── home_page
+│   │       ├── home_page.dart
+│   │       ├── home_page_vm.dart
+│   │       ├── home_page_state.dart
+│   │       └── components
+│   ├── components
+│   ├── style.dart    // 共通のスタイル定義
+│   └── app.dart
+├── domains
+│   ├── entities
+│   └── repositories  // リポジトリのinterface
+├── infrastructures
+│   └── repositories
+└── main.dart
+```
