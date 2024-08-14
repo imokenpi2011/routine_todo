@@ -16,6 +16,7 @@ class TodoRepositoryImpl implements TodoRepository {
     var maps = await db.query(
       _tableName,
       where: 'imp_date = date(?)',
+      whereArgs: [date.toIso8601String()],
     );
 
     if (maps.isEmpty) return [];
