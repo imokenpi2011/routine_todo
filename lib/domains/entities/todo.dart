@@ -11,6 +11,10 @@ class Todo {
   DateTime createdAt;
   DateTime updatedAt;
 
+  void updateCompleted(bool completed) {
+    this.completed = completed ? 1 : 0;
+  }
+
   Todo({
     required this.id,
     required this.repeatTodoPresetId,
@@ -22,4 +26,28 @@ class Todo {
     required this.createdAt,
     required this.updatedAt,
   });
+
+  Todo copyWith({
+    int? id,
+    int? repeatTodoPresetId,
+    String? todoName,
+    DateTime? impDate,
+    TimeOfDay? startedTime,
+    TimeOfDay? endedTime,
+    int? completed,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return Todo(
+      id: id ?? this.id,
+      repeatTodoPresetId: repeatTodoPresetId ?? this.repeatTodoPresetId,
+      todoName: todoName ?? this.todoName,
+      impDate: impDate ?? this.impDate,
+      startedTime: startedTime ?? this.startedTime,
+      endedTime: endedTime ?? this.endedTime,
+      completed: completed ?? this.completed,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 }
