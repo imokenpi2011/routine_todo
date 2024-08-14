@@ -8,7 +8,8 @@ const String latestTodosTableStructure = '''
   CREATE TABLE todos(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     repeat_todo_preset_id INTEGER NOT NULL,
-    name TEXT NOT NULL,
+    todo_name TEXT NOT NULL,
+    imp_date TEXT NOT NULL,
     started_time TEXT NULL DEFAULT NULL,
     ended_time TEXT NULL DEFAULT NULL,
     completed INTEGER NOT NULL DEFAULT 0,
