@@ -7,7 +7,7 @@ import 'package:sqflite/sqflite.dart';
 const String latestTodosTableStructure = '''
   CREATE TABLE todos(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    repeat_todo_preset_id INTEGER NOT NULL,
+    repeat_todo_preset_id INTEGER NULL DEFAULT NULL,
     todo_name TEXT NOT NULL,
     imp_date TEXT NOT NULL,
     started_time TEXT NULL DEFAULT NULL,
@@ -56,6 +56,7 @@ class AppDatabase {
     var databasePath = await getDatabasesPath();
     return openDatabase(
       join(databasePath, _dbFile),
+      version: 1,
       // 初回作成時はonCreateが呼ばれる
       onCreate: (db, version) async {
         await db.transaction((transaction) async {
