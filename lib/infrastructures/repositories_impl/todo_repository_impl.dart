@@ -31,15 +31,20 @@ class TodoRepositoryImpl implements TodoRepository {
       todoName: map['todo_name'],
       impDate: DateTime.parse(map['imp_date']),
       startedTime: map['started_time'] != null
-          ? TimeOfDay.fromDateTime(DateTime.parse(map['started_time']))
+          ? _parseTimeOfDay(map['started_time'])
           : null,
       endedTime: map['ended_time'] != null
-          ? TimeOfDay.fromDateTime(DateTime.parse(map['ended_time']))
+          ? _parseTimeOfDay(map['ended_time'])
           : null,
       completed: map['completed'],
       createdAt: DateTime.parse(map['created_at']),
       updatedAt: DateTime.parse(map['updated_at']),
     );
+  }
+
+  TimeOfDay _parseTimeOfDay(String time) {
+    final parts = time.split(':');
+    return TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
   }
 
   @override
