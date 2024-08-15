@@ -15,6 +15,7 @@ class DailyTodosViewModel extends ChangeNotifier {
 
   final DateTime _date = DateTime.now();
 
+  /// todoの一覧を取得する
   void fetchTodos() async {
     final todos = await _todoRepository.loadTodosByDate(_date);
     _todos = todos.map((todo) => TodoViewModel(todo)).toList();
@@ -39,11 +40,9 @@ class DailyTodosViewModel extends ChangeNotifier {
     }
   }
 
-  void updateTodoCompleted(int id, bool completed) {
-    final index = _todos.indexWhere((todoVm) => todoVm.todo.id == id);
-    if (index != -1) {
-      _todos[index].todo.updateCompleted(completed);
-      notifyListeners();
-    }
+  /// todoの完了状態を更新する
+  void updateTodoCompleted(int id, bool completed) async {
+    await _todoRepository.updateTodoCompleted(id, completed);
+    fetchTodos();
   }
 }
