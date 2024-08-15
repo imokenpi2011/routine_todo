@@ -7,7 +7,7 @@ import 'package:sqflite/sqflite.dart';
 const String latestTodosTableStructure = '''
   CREATE TABLE todos(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    repeat_todo_preset_id INTEGER NOT NULL,
+    repeat_todo_preset_id INTEGER NULL DEFAULT NULL,
     todo_name TEXT NOT NULL,
     imp_date TEXT NOT NULL,
     started_time TEXT NULL DEFAULT NULL,
@@ -17,6 +17,30 @@ const String latestTodosTableStructure = '''
     updated_at TEXT NOT NULL
   );
 ''';
+
+// 本日日付の文字列をyyyy-MM-dd形式で取得する
+final now = DateTime.now();
+final String today = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+// TODO: テストデータなので消す
+String insertTodosTestData = '''
+  INSERT INTO todos(
+    repeat_todo_preset_id,
+    todo_name,
+    imp_date,
+    started_time,
+    ended_time,
+    completed,
+    created_at,
+    updated_at
+  ) VALUES
+    (null, '時間あり', '$today', '10:00', '11:00', 0, '2021-09-01 00:00:00', '2021-09-01 00:00:00'),
+    (null, '日付変わり目', '$today', '03:00', '04:00', 0, '2021-09-01 00:00:00', '2021-09-01 00:00:00'),
+    (null, '時間null', '$today', null, null, 0, '2021-09-01 00:00:00', '2021-09-01 00:00:00'),
+    (null, '完了済みTODO', '$today', null, null, 1, '2021-09-01 00:00:00', '2021-09-01 00:00:00'),
+    (1, '本日日付でない', '2024-08-01', '12:00', '15:00', 0, '2021-09-01 00:00:00', '2021-09-01 00:00:00'),
+    (1, '繰り返し', '$today', '01:00', '03:00', 0, '2021-09-01 00:00:00', '2021-09-01 00:00:00'),
+    (1, '繰り返し2', '$today', '09:00', '10:00', 0, '2021-09-01 00:00:00', '2021-09-01 00:00:00')
+  ''';
 
 /// repeat_todo_presetsテーブルの定義
 // TODO: 定義する
@@ -56,12 +80,14 @@ class AppDatabase {
     var databasePath = await getDatabasesPath();
     return openDatabase(
       join(databasePath, _dbFile),
+      version: 1,
       // 初回作成時はonCreateが呼ばれる
       onCreate: (db, version) async {
         await db.transaction((transaction) async {
           await _multiExecInTransaction(transaction, [
             // todosテーブルの作成
             latestTodosTableStructure,
+            insertTodosTestData, // TODO: CRUDできるようになったら消す
             // repeat_todo_presetsテーブルの作成
             // TODO: latestRepeatTodoPresetsTableStructure,
             // repeat_todosテーブルの作成
