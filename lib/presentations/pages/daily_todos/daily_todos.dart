@@ -13,31 +13,40 @@ class DailyTodos extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Daily Todos'),
         ),
-        body: Consumer<DailyTodosViewModel>(
-          builder: (context, viewModel, child) {
-            return ListView.builder(
-              itemCount: viewModel.todos.length,
-              itemBuilder: (context, index) {
-                final todoViewModel = viewModel.todos[index];
-                return Card(
-                  child: ListTile(
-                    leading: Checkbox(
-                      value: todoViewModel.todo.completed == 1,
-                      onChanged: (bool? value) {
-                        if (value != null) {
-                          viewModel.updateTodoCompleted(
-                            todoViewModel.todo.id,
-                            value,
+        body: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Consumer<DailyTodosViewModel>(
+                builder: (context, viewModel, child) {
+                  return ListView.builder(
+                        itemCount: viewModel.todos.length,
+                        itemBuilder: (context, index) {
+                          final todoViewModel = viewModel.todos[index];
+                          return Card(
+                            child: ListTile(
+                              leading: Checkbox(
+                                value: todoViewModel.todo.completed == 1,
+                                onChanged: (bool? afterCompleted) {
+                                  if (afterCompleted != null) {
+                                    viewModel.updateTodoCompleted(
+                                      todoViewModel.todo.id,
+                                      afterCompleted,
+                                    );
+                                  }
+                                },
+                              ),
+                              title: Text(todoViewModel.todo.todoName),
+                            ),
                           );
-                        }
-                      },
-                    ),
-                    title: Text(todoViewModel.todo.todoName),
-                  ),
-                );
-              },
-            );
-          },
+                        },
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
