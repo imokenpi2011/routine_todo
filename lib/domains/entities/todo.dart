@@ -11,10 +11,6 @@ class Todo {
   DateTime createdAt;
   DateTime updatedAt;
 
-  void updateCompleted(bool completed) {
-    this.completed = completed ? 1 : 0;
-  }
-
   Todo({
     required this.id,
     required this.repeatTodoPresetId,
