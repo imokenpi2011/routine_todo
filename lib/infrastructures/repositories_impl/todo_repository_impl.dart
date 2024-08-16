@@ -73,9 +73,8 @@ class TodoRepositoryImpl implements TodoRepository {
       startedTime: map['started_time'] != null
           ? _parseTimeOfDay(map['started_time'])
           : null,
-      endedTime: map['ended_time'] != null
-          ? _parseTimeOfDay(map['ended_time'])
-          : null,
+      endedTime:
+          map['ended_time'] != null ? _parseTimeOfDay(map['ended_time']) : null,
       completed: map['completed'],
       createdAt: DateTime.parse(map['created_at']),
       updatedAt: DateTime.parse(map['updated_at']),
@@ -104,8 +103,12 @@ class TodoRepositoryImpl implements TodoRepository {
       'repeat_todo_preset_id': todo.repeatTodoPresetId,
       'todo_name': todo.todoName,
       'imp_date': todo.impDate.toIso8601String(),
-      'started_time': todo.startedTime != null ? _timeOfDayToDateTime(todo.startedTime!).toIso8601String() : null,
-      'ended_time': todo.endedTime != null ? _timeOfDayToDateTime(todo.endedTime!).toIso8601String() : null,
+      'started_time': todo.startedTime != null
+          ? _timeOfDayToDateTime(todo.startedTime!).toIso8601String()
+          : null,
+      'ended_time': todo.endedTime != null
+          ? _timeOfDayToDateTime(todo.endedTime!).toIso8601String()
+          : null,
       'completed': todo.completed,
       'created_at': todo.createdAt.toIso8601String(),
       'updated_at': todo.updatedAt?.toIso8601String(),
