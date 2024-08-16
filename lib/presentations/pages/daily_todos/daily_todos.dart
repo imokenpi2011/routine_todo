@@ -9,7 +9,9 @@ class DailyTodos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => DailyTodosViewModel(Provider.of<TodoRepository>(context, listen: false)),      child: Scaffold(
+      create: (context) => DailyTodosViewModel(
+          Provider.of<TodoRepository>(context, listen: false)),
+      child: Scaffold(
         appBar: AppBar(
           title: const Text('Daily Todos'),
         ),
@@ -20,28 +22,28 @@ class DailyTodos extends StatelessWidget {
               child: Consumer<DailyTodosViewModel>(
                 builder: (context, viewModel, child) {
                   return ListView.builder(
-                        itemCount: viewModel.todos.length,
-                        itemBuilder: (context, index) {
-                          final todoViewModel = viewModel.todos[index];
-                          return Card(
-                            child: ListTile(
-                              leading: Checkbox(
-                                value: todoViewModel.todo.completed == 1,
-                                onChanged: (bool? afterCompleted) {
-                                  if (afterCompleted != null) {
-                                    viewModel.updateTodoCompleted(
-                                      todoViewModel.todo.id,
-                                      afterCompleted,
-                                    );
-                                  }
-                                },
-                              ),
-                              title: Text(todoViewModel.todo.todoName),
-                            ),
-                          );
-                        },
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
+                    itemCount: viewModel.todos.length,
+                    itemBuilder: (context, index) {
+                      final todoViewModel = viewModel.todos[index];
+                      return Card(
+                        child: ListTile(
+                          leading: Checkbox(
+                            value: todoViewModel.todo.completed == 1,
+                            onChanged: (bool? afterCompleted) {
+                              if (afterCompleted != null) {
+                                viewModel.updateTodoCompleted(
+                                  todoViewModel.todo.id,
+                                  afterCompleted,
+                                );
+                              }
+                            },
+                          ),
+                          title: Text(todoViewModel.todo.todoName),
+                        ),
+                      );
+                    },
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
                   );
                 },
               ),
