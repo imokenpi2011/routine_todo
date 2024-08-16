@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:routine_todo/presentations/pages/daily_todos_edit/daily_todos_edit.dart';
 import '../../../domains/repositories/todo_repository.dart';
 import 'daily_todos_view_model.dart';
 
@@ -50,7 +51,23 @@ class DailyTodos extends StatelessWidget {
             ),
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.add),
+            // メモ登録画面に遷移する
+            onPressed: () => _goToDailyTodosCreateScreen(context)),
       ),
     );
+  }
+
+  void _goToDailyTodosCreateScreen(BuildContext context) async {
+    var route = MaterialPageRoute(
+      settings: const RouteSettings(name: '/ui.daily_todos_edit'),
+      builder: (BuildContext context) => const DailyTodosEdit(null),
+    );
+    final result = await Navigator.push(context, route);
+
+    if (result == true) {
+      Provider.of<DailyTodosViewModel>(context, listen: false).fetchTodos(); // 戻った後にTODOをリフレッシュ
+    }
   }
 }
