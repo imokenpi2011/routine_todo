@@ -38,6 +38,32 @@ class TodoRepositoryImpl implements TodoRepository {
     return fromMap(maps.first);
   }
 
+  @override
+  Future<void> create(String todoName, DateTime impDate, TimeOfDay? startedTime,
+      TimeOfDay? endedTime, DateTime createdAt) async {
+    final db = await _appDatabase.database;
+    await db.insert(
+      _tableName,
+      {
+        'todo_name': todoName,
+        'imp_date': impDate.toIso8601String(),
+        'started_time': startedTime != null
+            ? _timeOfDayToDateTime(startedTime).toIso8601String()
+            : null,
+        'ended_time': endedTime != null
+            ? _timeOfDayToDateTime(endedTime).toIso8601String()
+            : null,
+        'created_at': createdAt.toIso8601String(),
+      },
+    );
+  }
+
+  @override
+  Future<void> update(int id, String todoName, TimeOfDay? startedTime,
+      TimeOfDay? endedTime, DateTime updatedAt) async {
+    // TODO: 実装する
+  }
+
   Todo fromMap(Map<String, dynamic> map) {
     return Todo(
       id: map['id'],
