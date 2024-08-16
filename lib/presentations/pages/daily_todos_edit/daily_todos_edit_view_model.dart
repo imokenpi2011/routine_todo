@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:routine_todo/domains/entities/todo.dart';
 import 'package:routine_todo/domains/repositories/todo_repository.dart';
 
 class DailyTodosEditViewModel extends ChangeNotifier {
@@ -24,13 +25,28 @@ class DailyTodosEditViewModel extends ChangeNotifier {
 
   String get todoName => _todoName;
 
+  set todoName(String value) {
+    _todoName = value;
+    notifyListeners();
+  }
+
   late TimeOfDay? _startedTime;
 
   TimeOfDay? get startedTime => _startedTime;
 
+  set startedTime(TimeOfDay? value) {
+    _startedTime = value;
+    notifyListeners();
+  }
+
   late TimeOfDay? _endedTime;
 
   TimeOfDay? get endedTime => _endedTime;
+
+  set endedTime(TimeOfDay? value) {
+    _endedTime = value;
+    notifyListeners();
+  }
 
   late bool _isNew = false; // 新規作成かどうか
 
@@ -58,4 +74,20 @@ class DailyTodosEditViewModel extends ChangeNotifier {
     _endedTime = todo.endedTime;
     notifyListeners();
   }
+
+  Future save() async => await _todoRepository.create(
+        _todoName,
+        DateTime.now(),
+        _startedTime,
+        _endedTime,
+        DateTime.now(),
+      );
+
+  Future update() async => await _todoRepository.update(
+        _id!,
+        _todoName,
+        _startedTime,
+        _endedTime,
+        DateTime.now(),
+      );
 }
