@@ -10,16 +10,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Routine App',
-      theme: ThemeData(),
-      home: MultiProvider(
-        providers: [
-          Provider<TodoRepository>(
-            create: (_) => TodoRepositoryImpl(AppDatabase()),
-          ),
-        ],
-        child: const DailyTodos(),
+    return MultiProvider(
+      providers: [
+        Provider<TodoRepository>(
+          create: (_) => TodoRepositoryImpl(AppDatabase()),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Routine App',
+        theme: ThemeData(),
+        home: const DailyTodos(),
       ),
     );
   }
