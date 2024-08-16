@@ -24,6 +24,20 @@ class TodoRepositoryImpl implements TodoRepository {
     return maps.map((map) => fromMap(map)).toList();
   }
 
+  @override
+  Future<Todo?> loadTodoById(int id) async {
+    final db = await _appDatabase.database;
+    var maps = await db.query(
+      _tableName,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    if (maps.isEmpty) return null;
+
+    return fromMap(maps.first);
+  }
+
   Todo fromMap(Map<String, dynamic> map) {
     return Todo(
       id: map['id'],
@@ -68,7 +82,7 @@ class TodoRepositoryImpl implements TodoRepository {
       'ended_time': todo.endedTime != null ? _timeOfDayToDateTime(todo.endedTime!).toIso8601String() : null,
       'completed': todo.completed,
       'created_at': todo.createdAt.toIso8601String(),
-      'updated_at': todo.updatedAt.toIso8601String(),
+      'updated_at': todo.updatedAt?.toIso8601String(),
     };
   }
 
