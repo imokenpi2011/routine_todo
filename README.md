@@ -8,19 +8,26 @@
 ```
 lib/
 ├── presentations
-│   ├── pages
-│   │   └── home_page
-│   │       ├── home_page.dart
-│   │       ├── home_page_vm.dart
-│   │       ├── home_page_state.dart
-│   │       └── components
-│   ├── components
+│   ├── pages         // 各ページ用ファイルを定義
+│   │   └── dailt_todos
+│   │       ├── dailt_todos.dart
+│   │       ├── dailt_todos_view_model.dart
+│   │       └── components // ページ内のコンポーネント
+│   ├── components    // 共通のコンポーネント
 │   ├── style.dart    // 共通のスタイル定義
 │   └── app.dart
 ├── domains
-│   ├── entities
+│   ├── entities      // ドメインモデル
 │   └── repositories  // リポジトリのinterface
 ├── infrastructures
-│   └── repositories
+│   └── repositories_impl  // リポジトリの実装
 └── main.dart
 ```
+
+## ブランチ戦略
+
+- master: リリース済みの最新コード
+- milestoneXX: マイルストーンごとのリリース用ブランチ
+  - リリース時にmasterにマージ
+- issue/X: issueごとの作業用ブランチ。リリース対象のmilestoneブランチから作成する
+  - マージ時にissueをクローズ
