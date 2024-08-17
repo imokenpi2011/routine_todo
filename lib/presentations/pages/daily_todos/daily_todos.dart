@@ -16,11 +16,10 @@ class DailyTodos extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Daily Todos'),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Consumer<DailyTodosViewModel>(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Consumer<DailyTodosViewModel>(
                 builder: (context, viewModel, child) {
                   return ListView.builder(
                     itemCount: viewModel.todos.length,
@@ -48,13 +47,14 @@ class DailyTodos extends StatelessWidget {
                   );
                 },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add),
-            // メモ登録画面に遷移する
-            onPressed: () => _goToDailyTodosCreateScreen(context)),
+          child: const Icon(Icons.add),
+          // メモ登録画面に遷移する
+          onPressed: () => _goToDailyTodosCreateScreen(context),
+        ),
       ),
     );
   }
