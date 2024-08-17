@@ -15,11 +15,19 @@ class MyApp extends StatelessWidget {
         Provider<TodoRepository>(
           create: (_) => TodoRepositoryImpl(AppDatabase()),
         ),
+        ChangeNotifierProvider<DailyTodosViewModel>(
+          create: (context) => DailyTodosViewModel(
+            Provider.of<TodoRepository>(context, listen: false),
+          ),
+        ),
       ],
       child: MaterialApp(
         title: 'Routine App',
         theme: ThemeData(),
         home: const DailyTodos(),
+        routes: {
+          '/ui.daily_todos_edit': (context) => const DailyTodosEdit(null),
+        },
       ),
     );
   }
