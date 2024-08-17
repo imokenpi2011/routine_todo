@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:routine_todo/presentations/pages/daily_todos_edit/daily_todos_edit_view_model.dart';
-
 import '../../../domains/repositories/todo_repository.dart';
 import '../../components/time_picker.dart';
 
@@ -14,77 +13,83 @@ class DailyTodosEdit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vm = DailyTodosEditViewModel(
-        _id, Provider.of<TodoRepository>(context, listen: false));
     return ChangeNotifierProvider(
-      create: (context) => vm,
+      create: (context) => DailyTodosEditViewModel(
+          _id, Provider.of<TodoRepository>(context, listen: false)),
       child: Scaffold(
         appBar: AppBar(
           title: Text(_title),
           actions: [
-            ElevatedButton(
-              onPressed: () {
-                if (vm.isNew) {
-                  _save(context);
-                } else {
-                  _update(context);
-                }
-                Navigator.pop(context);
+            Consumer<DailyTodosEditViewModel>(
+              builder: (context, vm, child) {
+                return ElevatedButton(
+                  onPressed: () async {
+                    if (vm.isNew) {
+                      await _save(context);
+                    } else {
+                      await _update(context);
+                    }
+                    Navigator.pop(context, true); // trueを返してデータ再読み込みをトリガー
+                  },
+                  child: const Text('保存'),
+                );
               },
-              child: const Text('保存'),
-            )
+            ),
           ],
         ),
-        body: Form(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  initialValue: vm.todoName,
-                  decoration: const InputDecoration(labelText: 'TODOを入力'),
-                  maxLength: 30,
-                  onChanged: (value) => vm.todoName = value,
-                ),
-              ),
-              Row(
+        body: Consumer<DailyTodosEditViewModel>(
+          builder: (context, vm, child) {
+            return Form(
+              child: Column(
                 children: [
-                  // TimePicker for startedTime
-                  Expanded(
-                    child: TimePicker(
-                      label: '開始時間',
-                      initialTime: vm.startedTime ?? TimeOfDay.now(),
-                      onTimeChanged: (time) => vm.startedTime = time,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      initialValue: vm.todoName,
+                      decoration: const InputDecoration(labelText: 'TODOを入力'),
+                      maxLength: 30,
+                      onChanged: (value) => vm.todoName = value,
                     ),
                   ),
-                  // TimePicker for endedTime
-                  Expanded(
-                    child: TimePicker(
-                      label: '終了時間',
-                      initialTime: vm.endedTime ?? TimeOfDay.now(),
-                      onTimeChanged: (time) => vm.endedTime = time,
-                    ),
+                  Row(
+                    children: [
+                      // TODO: 使いにくいのでもっと良いやり方を模索する
+                      // TimePicker for startedTime
+                      Expanded(
+                        child: TimePicker(
+                          label: '開始時間',
+                          initialTime: vm.startedTime ?? TimeOfDay.now(),
+                          onTimeChanged: (time) => vm.startedTime = time,
+                        ),
+                      ),
+                      // TimePicker for endedTime
+                      Expanded(
+                        child: TimePicker(
+                          label: '終了時間',
+                          initialTime: vm.endedTime ?? TimeOfDay.now(),
+                          onTimeChanged: (time) => vm.endedTime = time,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
   }
 
-  void _save(BuildContext context) async {
+  Future<void> _save(BuildContext context) async {
     var vm = Provider.of<DailyTodosEditViewModel>(context, listen: false);
-
     _showIndicator(context);
     await vm.save();
     _goToDailyTodosScreen(context);
   }
 
-  void _update(BuildContext context) async {
+  Future<void> _update(BuildContext context) async {
     var vm = Provider.of<DailyTodosEditViewModel>(context, listen: false);
-
     _showIndicator(context);
     await vm.update();
     _goToDailyTodosScreen(context);
@@ -104,6 +109,9 @@ class DailyTodosEdit extends StatelessWidget {
   }
 
   void _goToDailyTodosScreen(BuildContext context) {
-    if (context.mounted) Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+    // daily_todosの画面に戻る
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context, true);
+    }
   }
 }
