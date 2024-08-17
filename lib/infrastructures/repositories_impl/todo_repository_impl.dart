@@ -46,7 +46,7 @@ class TodoRepositoryImpl implements TodoRepository {
       _tableName,
       {
         'todo_name': todoName,
-        'imp_date': impDate.toIso8601String(),
+        'imp_date': _formatDate(impDate),
         'started_time': startedTime != null
             ? _timeOfDayToDateTime(startedTime).toIso8601String()
             : null,
@@ -77,7 +77,7 @@ class TodoRepositoryImpl implements TodoRepository {
           map['ended_time'] != null ? _parseTimeOfDay(map['ended_time']) : null,
       completed: map['completed'],
       createdAt: DateTime.parse(map['created_at']),
-      updatedAt: DateTime.parse(map['updated_at']),
+      updatedAt: map['updated_at'] != null ? DateTime.parse(map['updated_at']) : null,
     );
   }
 
@@ -102,7 +102,7 @@ class TodoRepositoryImpl implements TodoRepository {
       'id': todo.id,
       'repeat_todo_preset_id': todo.repeatTodoPresetId,
       'todo_name': todo.todoName,
-      'imp_date': todo.impDate.toIso8601String(),
+      'imp_date': _formatDate(todo.impDate),
       'started_time': todo.startedTime != null
           ? _timeOfDayToDateTime(todo.startedTime!).toIso8601String()
           : null,
@@ -118,5 +118,9 @@ class TodoRepositoryImpl implements TodoRepository {
   DateTime _timeOfDayToDateTime(TimeOfDay time) {
     final now = DateTime.now();
     return DateTime(now.year, now.month, now.day, time.hour, time.minute);
+  }
+
+  String _formatDate(DateTime date) {
+    return "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
   }
 }
