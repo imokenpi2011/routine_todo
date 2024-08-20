@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(),
         home: const DailyTodos(),
         routes: {
-          '/ui.daily_todos_edit': (context) => const DailyTodosEdit(null),
+          '/ui.daily_todos_edit': (context) => DailyTodosEdit(null),
         },
       ),
     );
