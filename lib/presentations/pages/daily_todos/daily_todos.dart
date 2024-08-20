@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:routine_todo/presentations/pages/daily_todos_edit/daily_todos_edit.dart';
-import '../../../domains/repositories/todo_repository.dart';
+import 'package:routine_todo/domains/repositories/app_database.dart';
+import 'package:routine_todo/infrastructures/repositories_impl/todo_repository_impl.dart';
+import '../daily_todos_edit/daily_todos_edit.dart';
 import 'daily_todos_view_model.dart';
+import '../../../domains/repositories/todo_repository.dart';
 
 class DailyTodos extends StatelessWidget {
   const DailyTodos({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => DailyTodosViewModel(
-          Provider.of<TodoRepository>(context, listen: false)),
+    final vm = DailyTodosViewModel(TodoRepositoryImpl(AppDatabase()));
+    return ChangeNotifierProxyProvider<TodoRepository, DailyTodosViewModel>(
+      create: (_) => vm,
+      update: (context, repository, previous) =>
+          previous ?? DailyTodosViewModel(repository),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Daily Todos'),
@@ -62,7 +66,7 @@ class DailyTodos extends StatelessWidget {
   void _goToDailyTodosCreateScreen(BuildContext context) async {
     var route = MaterialPageRoute(
       settings: const RouteSettings(name: '/ui.daily_todos_edit'),
-      builder: (BuildContext context) => const DailyTodosEdit(null),
+      builder: (BuildContext context) => DailyTodosEdit(null),
     );
     final result = await Navigator.push(context, route);
 
