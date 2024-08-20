@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:routine_todo/domains/entities/todo.dart';
 import 'package:routine_todo/domains/repositories/todo_repository.dart';
 
 class DailyTodosEditViewModel extends ChangeNotifier {
@@ -60,7 +59,7 @@ class DailyTodosEditViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void fetchTodo(int id) async {
+  Future fetchTodo(int id) async {
     final todo = await _todoRepository.loadTodoById(id);
     // TODO: nullの場合はエラーを返却するようにする
     if (todo == null) {

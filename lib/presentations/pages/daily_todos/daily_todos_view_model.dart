@@ -16,9 +16,9 @@ class DailyTodosViewModel extends ChangeNotifier {
   final DateTime _date = DateTime.now();
 
   /// todoの一覧を取得する
-  void fetchTodos() async {
+  Future fetchTodos() async {
     final todos = await _todoRepository.loadTodosByDate(_date);
-    _todos = todos.map((todo) => TodoViewModel(todo)).toList();
+    _todos =  todos.map((todo) => TodoViewModel(todo)).toList();
     notifyListeners();
   }
 
