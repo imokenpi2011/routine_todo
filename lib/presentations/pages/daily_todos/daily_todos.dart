@@ -57,21 +57,22 @@ class DailyTodos extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           // メモ登録画面に遷移する
-          onPressed: () => _goToDailyTodosCreateScreen(context),
+          onPressed: () => _goToDailyTodosCreateScreen(context, vm),
         ),
       ),
     );
   }
 
-  void _goToDailyTodosCreateScreen(BuildContext context) async {
+  void _goToDailyTodosCreateScreen(BuildContext context, DailyTodosViewModel vm) async {
     var route = MaterialPageRoute(
       settings: const RouteSettings(name: '/ui.daily_todos_edit'),
       builder: (BuildContext context) => DailyTodosEdit(null),
     );
-    final result = await Navigator.push(context, route);
 
-    if (result == true) {
-      Provider.of<DailyTodosViewModel>(context, listen: false).fetchTodos(); // 戻った後にTODOをリフレッシュ
-    }
+    await Navigator.push(context, route).then((value) async {
+      if (value == true) {
+        await vm.fetchTodos(); // 戻った後にTODOをリフレッシュ
+      }
+    });
   }
 }
