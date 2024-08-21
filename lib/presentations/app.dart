@@ -4,22 +4,32 @@ import 'package:routine_todo/domains/repositories/app_database.dart';
 import 'package:routine_todo/domains/repositories/todo_repository.dart';
 import 'package:routine_todo/infrastructures/repositories_impl/todo_repository_impl.dart';
 import 'package:routine_todo/presentations/pages/daily_todos/daily_todos.dart';
+import 'package:routine_todo/presentations/pages/daily_todos/daily_todos_view_model.dart';
+import 'package:routine_todo/presentations/pages/daily_todos_edit/daily_todos_edit.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Routine App',
-      theme: ThemeData(),
-      home: MultiProvider(
-        providers: [
-          Provider<TodoRepository>(
-            create: (_) => TodoRepositoryImpl(AppDatabase()),
+    return MultiProvider(
+      providers: [
+        Provider<TodoRepository>(
+          create: (_) => TodoRepositoryImpl(AppDatabase()),
+        ),
+        ChangeNotifierProvider<DailyTodosViewModel>(
+          create: (context) => DailyTodosViewModel(
+            Provider.of<TodoRepository>(context, listen: false),
           ),
-        ],
-        child: const DailyTodos(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Routine App',
+        theme: ThemeData(),
+        home: const DailyTodos(),
+        routes: {
+          '/ui.daily_todos_edit': (context) => DailyTodosEdit(null),
+        },
       ),
     );
   }

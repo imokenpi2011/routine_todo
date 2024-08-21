@@ -14,7 +14,7 @@ const String latestTodosTableStructure = '''
     ended_time TEXT NULL DEFAULT NULL,
     completed INTEGER NOT NULL DEFAULT 0,
     created_at TEXT NOT NULL,
-    updated_at TEXT NOT NULL
+    updated_at TEXT NULL DEFAULT NULL
   );
 ''';
 
@@ -48,7 +48,7 @@ const String latestRepeatTodoPresetsTableStructure = '''
   CREATE TABLE repeat_todo_presets(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     created_at TEXT NOT NULL,
-    updated_at TEXT NOT NULL
+    updated_at NULL DEFAULT NULL
   );
 ''';
 
@@ -59,7 +59,7 @@ const String latestRepeatTodosTableStructure = '''
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     repeat_todo_preset_id INTEGER NOT NULL,
     created_at TEXT NOT NULL,
-    updated_at TEXT NOT NULL
+    updated_at TEXT NULL DEFAULT NULL
   )
   FOREIGN KEY (repeat_todo_preset_id) REFERENCES repeat_todo_presets(id);
 ''';

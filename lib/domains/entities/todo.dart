@@ -9,18 +9,18 @@ class Todo {
   TimeOfDay? endedTime;
   int completed;
   DateTime createdAt;
-  DateTime updatedAt;
+  DateTime? updatedAt;
 
   Todo({
     required this.id,
-    required this.repeatTodoPresetId,
+    this.repeatTodoPresetId,
     required this.todoName,
     required this.impDate,
-    required this.startedTime,
-    required this.endedTime,
+    this.startedTime,
+    this.endedTime,
     required this.completed,
     required this.createdAt,
-    required this.updatedAt,
+    this.updatedAt,
   });
 
   Todo copyWith({
