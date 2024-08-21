@@ -15,7 +15,7 @@ class DailyTodosEdit extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => DailyTodosEditViewModel(
-          _id, Provider.of<TodoRepository>(context, listen: false)),
+          _id, TodoRepositoryImpl(AppDatabase())),
       child: Scaffold(
         appBar: AppBar(
           title: Text(_title),
@@ -25,9 +25,9 @@ class DailyTodosEdit extends StatelessWidget {
                 return ElevatedButton(
                   onPressed: () async {
                     if (vm.isNew) {
-                      await _save(context);
+                      await _save(context, vm);
                     } else {
-                      await _update(context);
+                      await _update(context, vm);
                     }
                     Navigator.pop(context, true); // trueを返してデータ再読み込みをトリガー
                   },
@@ -81,15 +81,13 @@ class DailyTodosEdit extends StatelessWidget {
     );
   }
 
-  Future<void> _save(BuildContext context) async {
-    var vm = Provider.of<DailyTodosEditViewModel>(context, listen: false);
+  Future _save(BuildContext context, DailyTodosEditViewModel vm) async {
     _showIndicator(context);
     await vm.save();
     _goToDailyTodosScreen(context);
   }
 
-  Future<void> _update(BuildContext context) async {
-    var vm = Provider.of<DailyTodosEditViewModel>(context, listen: false);
+  Future _update(BuildContext context, DailyTodosEditViewModel vm) async {
     _showIndicator(context);
     await vm.update();
     _goToDailyTodosScreen(context);
